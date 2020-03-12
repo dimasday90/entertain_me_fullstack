@@ -26,7 +26,9 @@ class Orchestra {
         return redis.set("entertainData", JSON.stringify(result));
       })
       .then(data => {
-        res.status(200).json(result);
+        setTimeout(() => {
+          res.status(200).json(result);
+        }, 3000);
       })
       .catch(err => {
         next(err);
@@ -80,10 +82,13 @@ class Orchestra {
       tags: req.body.tags
     };
 
-    redis
-      .del("entertainData")
-      .del("movies")
-      .del("tvseries")
+    let redisPromises = [
+      redis.del("entertainData"),
+      redis.del("movies"),
+      redis.del("tvseries")
+    ];
+
+    Promise.all(redisPromises)
       .then(result => {
         return axios.post(moviesURL, newMovie);
       })
@@ -104,10 +109,13 @@ class Orchestra {
       tags: req.body.tags
     };
 
-    redis
-      .del("entertainData")
-      .del("movies")
-      .del("tvseries")
+    let redisPromises = [
+      redis.del("entertainData"),
+      redis.del("movies"),
+      redis.del("tvseries")
+    ];
+
+    Promise.all(redisPromises)
       .then(result => {
         return axios.post(tvSeriesURL, newTvSeries);
       })
@@ -127,7 +135,7 @@ class Orchestra {
       .then(resultRead => {
         if (resultRead) {
           let tempData = JSON.parse(resultRead);
-          if (tempData._id == req.params.id) {
+          if (tempData != null && tempData._id == req.params.id) {
             res.status(200).json(tempData);
           } else {
             return axios.get(moviesURL + `/${req.params.id}`);
@@ -162,7 +170,7 @@ class Orchestra {
       .then(resultRead => {
         if (resultRead) {
           let tempData = JSON.parse(resultRead);
-          if (tempData._id == req.params.id) {
+          if (tempData != null && tempData._id == req.params.id) {
             res.status(200).json(tempData);
           } else {
             return axios.get(tvSeriesURL + `/${req.params.id}`);
