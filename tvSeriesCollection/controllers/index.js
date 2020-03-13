@@ -4,7 +4,12 @@ class TvSeriesController {
   static findAll(req, res, next) {
     const collection = req.db.collection("tvseries");
     collection
-      .find()
+      .find(
+        {},
+        {
+          sort: [["title", 1]]
+        }
+      )
       .toArray()
       .then(movies => {
         res.status(200).json(movies);

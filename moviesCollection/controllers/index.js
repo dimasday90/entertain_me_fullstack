@@ -4,7 +4,12 @@ class MovieController {
   static findAll(req, res, next) {
     const collection = req.db.collection("movies");
     collection
-      .find()
+      .find(
+        {},
+        {
+          sort: [["title", 1]]
+        }
+      )
       .toArray()
       .then(movies => {
         res.status(200).json(movies);
