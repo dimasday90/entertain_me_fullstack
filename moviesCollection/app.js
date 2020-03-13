@@ -22,7 +22,7 @@ client
       next();
     });
 
-    app.use("/movies", routes);
+    app.use(routes);
     app.use(errorHandler);
   })
   .catch(console.log);

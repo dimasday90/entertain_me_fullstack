@@ -22,7 +22,7 @@ client
       next();
     });
 
-    app.use("/tvseries", routes);
+    app.use(routes);
     app.use(errorHandler);
   })
   .catch(console.log);

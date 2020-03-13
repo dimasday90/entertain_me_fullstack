@@ -1,6 +1,6 @@
 const axios = require("axios");
-const moviesURL = "http://localhost:3001/movies";
-const tvSeriesURL = "http://localhost:3002/tvseries";
+const moviesURL = "http://localhost:3001";
+const tvSeriesURL = "http://localhost:3002";
 const Redis = require("ioredis");
 const redis = new Redis();
 
