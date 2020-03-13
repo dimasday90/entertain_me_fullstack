@@ -16,7 +16,7 @@ class TvSeriesController {
 
   static addTvSeries(req, res, next) {
     const collection = req.db.collection("tvseries");
-    let newMovie = {
+    let newTvSeries = {
       title: req.body.title,
       overview: req.body.overview,
       poster_path: req.body.poster_path,
@@ -26,8 +26,7 @@ class TvSeriesController {
 
     collection
       .insertOne(newMovie)
-      .then(result => {
-        console.log(result);
+      .then(_ => {
         res.status(201).json({
           msg: "new tv series inserted successfully"
         });
@@ -43,6 +42,46 @@ class TvSeriesController {
       .findOne({ _id: ObjectID(req.params.id) })
       .then(tvseries => {
         res.status(200).json(tvseries);
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+
+  static updateOneTvSeries(req, res, next) {
+    const collection = req.db.collection("tvseries");
+    let updateTvSeries = {
+      title: req.body.title,
+      overview: req.body.overview,
+      poster_path: req.body.poster_path,
+      popularity: req.body.popularity,
+      tags: req.body.tags
+    };
+    collection
+      .updateOne(
+        { _id: ObjectID(req.params.id) },
+        {
+          $set: updateTvSeries
+        }
+      )
+      .then(_ => {
+        res.status(200).json({
+          msg: "tv series updated successfully"
+        });
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+
+  static deleteOneTvSeries(req, res, next) {
+    const collection = req.db.collection("tvseries");
+    collection
+      .deleteOne({ _id: ObjectID(req.params.id) })
+      .then(_ => {
+        res.status(200).json({
+          msg: "one tv series deleted successfully"
+        });
       })
       .catch(err => {
         next(err);
