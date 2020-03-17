@@ -26,31 +26,11 @@ const resolvers = {
       return tvseries;
     },
     getOneMovie: async (_, args) => {
-      const redisOneMovie = await redis.get("oneMovie");
-      if (redisOneMovie) {
-        if (JSON.parse(redisOneMovie)._id == args._id)
-          return JSON.parse(redisOneMovie);
-      }
-
       const { data: movie } = await axios.get(moviesURL + `/${args._id}`);
-      const setRedisOneMovie = await redis.set(
-        "oneMovie",
-        JSON.stringify(movie)
-      );
       return movie;
     },
     getOneTvSeries: async (_, args) => {
-      const redisOneTvSeries = await redis.get("oneTvSeries");
-      if (redisOneTvSeries) {
-        if (JSON.parse(redisOneTvSeries)._id == args._id)
-          return JSON.stringify(redisOneTvSeries);
-      }
-
       const { data: tvseries } = await axios.get(tvSeriesURL + `/${args._id}`);
-      const setRedisOneTvSeries = await redis.set(
-        "oneTvSeries",
-        JSON.stringify(tvseries)
-      );
       return tvseries;
     }
   }

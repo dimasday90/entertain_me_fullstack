@@ -12,6 +12,7 @@ import {
   InputLabel
 } from "@material-ui/core";
 import { useMutation } from "@apollo/react-hooks";
+import ALL_DATA from "../queries/getAllData";
 import GET_ONE_MOVIE from "../queries/getOneMovie";
 import GET_ONE_TV_SERIES from "../queries/getOneTvSeries";
 import UPDATE_ONE_MOVIE from "../mutations/updateOneMovie";
@@ -29,6 +30,9 @@ export default function UpdateFormDialog({ data, type: dataType }) {
   const [updateOneMovie] = useMutation(UPDATE_ONE_MOVIE, {
     refetchQueries: [
       {
+        query: ALL_DATA
+      },
+      {
         query: GET_ONE_MOVIE,
         variables: { _id: data._id }
       }
@@ -36,6 +40,9 @@ export default function UpdateFormDialog({ data, type: dataType }) {
   });
   const [updateOneTvSeries] = useMutation(UPDATE_ONE_TV_SERIES, {
     refetchQueries: [
+      {
+        query: ALL_DATA
+      },
       {
         query: GET_ONE_TV_SERIES,
         variables: { _id: data._id }
@@ -199,7 +206,7 @@ export default function UpdateFormDialog({ data, type: dataType }) {
             Cancel
           </Button>
           <Button onClick={submitForm} color="primary">
-            Add
+            Update
           </Button>
         </DialogActions>
       </Dialog>

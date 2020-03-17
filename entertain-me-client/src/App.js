@@ -4,6 +4,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "./views/HomePage";
 import MovieDetails from "./views/MovieDetails";
+import TvSeriesDetail from "./views/TvSeriesDetails";
 import "./App.css";
 
 const client = new ApolloClient({
@@ -20,6 +21,9 @@ export default function App() {
           </Route>
           <Route exact path="/movies/:id">
             <MovieDetails />
+          </Route>
+          <Route exact path="/tvseries/:id">
+            <TvSeriesDetail />
           </Route>
         </Switch>
       </Router>

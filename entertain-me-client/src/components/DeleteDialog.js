@@ -1,61 +1,28 @@
 import React, { useState } from "react";
-import {
-  Button,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel
-} from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
 import { useMutation } from "@apollo/react-hooks";
-import ALL_MOVIES from "../queries/getMovies";
-import ALL_TVSERIES from "../queries/getTvSeries";
-import ADD_NEW_MOVIE from "../mutations/addMovie";
-import ADD_NEW_TVSERIES from "../mutations/addTvSeries";
+import ALL_DATA from "../queries/getAllData";
+import DELETE_ONE_MOVIE from "../mutations/deleteOneMovie";
+import DELETE_ONE_TV_SERIES from "../mutations/deleteOneTvSeries";
+import { useHistory } from "react-router-dom";
 
-export default function FormDialog() {
+export default function FormDialog({ data, type: dataType }) {
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState("");
-  const [title, setTitle] = useState("");
-  const [overview, setOverview] = useState("");
-  const [posterPath, setPosterPath] = useState("");
-  const [popularity, setPopularity] = useState(0);
-  const [tags, setTags] = useState([]);
-
-  const [addNewMovie] = useMutation(ADD_NEW_MOVIE, {
+  const [deleteOneMovie] = useMutation(DELETE_ONE_MOVIE, {
     refetchQueries: [
       {
-        query: ALL_MOVIES
+        query: ALL_DATA
       }
     ]
   });
-  const [addNewTvSeries] = useMutation(ADD_NEW_TVSERIES, {
+  const [deleteOneTvSeries] = useMutation(DELETE_ONE_TV_SERIES, {
     refetchQueries: [
       {
-        query: ALL_TVSERIES
+        query: ALL_DATA
       }
     ]
   });
-
-  const tagItems = [
-    "Action",
-    "Adventure",
-    "Comedy",
-    "Drama",
-    "Romance",
-    "Sci-Fi",
-    "Thriller",
-    "Mystery",
-    "Horror",
-    "Animation",
-    "Family",
-    "Fantasy",
-    "Crime"
-  ];
+  const history = useHistory();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,40 +32,23 @@ export default function FormDialog() {
     setOpen(false);
   };
 
-  const submitForm = event => {
+  const deleteData = event => {
     event.preventDefault();
-    if (type.toLowerCase() === "movies") {
-      addNewMovie({
+    if (dataType.toLowerCase() === "movies") {
+      deleteOneMovie({
         variables: {
-          input: {
-            title,
-            overview,
-            poster_path: posterPath,
-            popularity: parseFloat(popularity),
-            tags
-          }
+          _id: data._id
         }
       });
-    } else if (type.toLowerCase() === "tvseries") {
-      addNewTvSeries({
+    } else if (dataType.toLowerCase() === "tvseries") {
+      deleteOneTvSeries({
         variables: {
-          input: {
-            title,
-            overview,
-            poster_path: posterPath,
-            popularity: parseFloat(popularity),
-            tags
-          }
+          _id: data._id
         }
       });
     }
     handleClose();
-    setTitle("");
-    setType("");
-    setOverview("");
-    setPosterPath("");
-    setPopularity(0);
-    setTags([]);
+    history.push("/");
   };
 
   return (
@@ -111,91 +61,15 @@ export default function FormDialog() {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Add Movie or Tv Series</DialogTitle>
-        <DialogContent>
-          <form style={{ display: "flex", flexDirection: "column" }}>
-            <FormControl className="form-control">
-              <InputLabel id="type-label">Type</InputLabel>
-              <Select
-                labelId="type-label"
-                value={type}
-                onChange={event => setType(event.target.value)}
-              >
-                <MenuItem value="" disable>
-                  Select type
-                </MenuItem>
-                <MenuItem value="movies">Movies</MenuItem>
-                <MenuItem value="tvseries">Tv Series</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className="form-control">
-              <TextField
-                autoFocus
-                id="title"
-                label="Title"
-                type="text"
-                value={title}
-                onChange={event => setTitle(event.target.value)}
-              />
-            </FormControl>
-            <FormControl className="form-control">
-              <TextField
-                autoFocus
-                id="overview"
-                label="Overview"
-                type="text"
-                size="medium"
-                value={overview}
-                onChange={event => setOverview(event.target.value)}
-              />
-            </FormControl>
-            <FormControl className="form-control">
-              <TextField
-                autoFocus
-                id="poster-path"
-                label="Poster Path"
-                type="text"
-                value={posterPath}
-                onChange={event => setPosterPath(event.target.value)}
-              />
-            </FormControl>
-            <FormControl className="form-control">
-              <TextField
-                autoFocus
-                id="popularity"
-                label="Popularity"
-                type="number"
-                min={0}
-                value={popularity}
-                onChange={event => setPopularity(event.target.value)}
-              />
-            </FormControl>
-            <FormControl className="form-control">
-              <InputLabel id="tags-label">Tags</InputLabel>
-              <Select
-                labelId="tags-label"
-                multiple
-                value={tags}
-                onChange={event => setTags(event.target.value)}
-              >
-                <MenuItem value="" disable>
-                  Select tags
-                </MenuItem>
-                {tagItems.sort().map((item, i) => (
-                  <MenuItem key={i} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </form>
-        </DialogContent>
+        <DialogTitle id="form-dialog-title">
+          DELETE {data.title} {dataType} ?
+        </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={submitForm} color="primary">
-            Add
+          <Button onClick={deleteData} color="secondary">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

@@ -10,8 +10,8 @@ import getAllData from "../queries/getAllData";
 
 export default function HomePage() {
   const { loading, error, data } = useQuery(getAllData);
-  if (loading) return <h3>Loading...</h3>;
-  if (error) return <h3>Error...</h3>;
+  if (loading) return <h3 style={{ color: "white" }}>Loading...</h3>;
+  if (error) return <h3 style={{ color: "white" }}>Error...</h3>;
   return (
     <>
       <Header />
