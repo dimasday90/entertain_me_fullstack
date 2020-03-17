@@ -1,0 +1,38 @@
+.main-list-container {
+  margin: 1px 20px;
+}
+
+.form-control {
+  width: 400px;
+}
+
+.container-label-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.add-form-dialog-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-container {
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+
+.item-tile {
+  margin: 0px 3px;
+}
+
+.item-img {
+  height: 300px;
+  width: 200px;
+  transition: 0.5s;
+}
+
+.item-img:hover {
+  transform: scale(1.1);
+}
