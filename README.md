@@ -29,4 +29,4 @@ This server applies microserver concept. There is one orchestrator, one server f
   
 ## In the web
 
-The web implented CRUD system, so user can add, edit, or delete movies or tv series. User are able to click one of the poster and see the details.
+The web implemented CRUD system, so user can add, edit, or delete movies or tv series. User are able to click one of the poster and see the details.
